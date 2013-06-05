@@ -1,0 +1,10 @@
+# imports
+source ~/.bash/colors.sh
+source ~/.bash/git_parse.sh
+source ~/.custom/prompt.sh
+source ~/.custom/aliases.sh
+source ~/.custom/pagoda.sh
+
+# paths
+export GOPATH=/usr/local/lib/golang
+export PATH=$GOPATH/bin:/usr/local/share/npm/bin:/usr/local/bin:/Users/jeremy/Projects/cakephp/cake/console:$PATH
