@@ -6,7 +6,7 @@ export EDITOR="mvim -v"
 
 function prompt_func() {
   git rev-parse --git-dir > /dev/null 2>&1
-  if [ $? -eq 0 ]; then
+  if [ $? -eq 0 -a "$PWD" != "$HOME" ]; then
     prompt="${LIGHT_GRAY}[${GREEN}$(parse_git_branch)${LIGHT_GRAY}]${LIGHT_GRAY}"
     PS1="${default_prompt}${prompt}" 
   else
