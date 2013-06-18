@@ -8,8 +8,9 @@ syntax on
 
 color ir_black
 
-" Set encoding
+" Set file meta
 set encoding=utf-8
+set fileformat=unix
 
 " Whitespace stuff
 set nowrap
@@ -39,6 +40,9 @@ set laststatus=2
 " equalalways behavior to be triggered the next time CommandT is used.
 " This is likely a bludgeon to solve some other issue, but it works
 set noequalalways
+
+" other
+set number
 
 " NERDTree configuration
 let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
