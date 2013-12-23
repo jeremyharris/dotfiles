@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# turns my dev env on or off
+
+if [ $1 == "on" ]; then
+	sudo apachectl start
+	brew services start mysql
+	brew services start redis
+else
+	sudo apachectl stop
+	brew services stop mysql
+	brew services stop redis
+fi
