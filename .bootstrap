@@ -9,4 +9,4 @@ source ~/.custom/pagoda.sh
 
 # paths
 export GOPATH=/usr/local/lib/golang
-export PATH=$HOME/.rvm/bin:$HOME/.scripts:$GOPATH/bin:/usr/local/share/npm/bin:/usr/local/bin:/Users/jeremy/Projects/cakephp/cake/console:$PATH
+export PATH=$(brew --prefix josegonzalez/php/php53)/bin::$HOME/.scripts:$GOPATH/bin:/usr/local/share/npm/bin:/usr/local/bin:/Users/jeremy/Projects/cakephp/lib/Cake/Console:$PATH
