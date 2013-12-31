@@ -2,7 +2,6 @@
 default_prompt="${GREEN}\h${LIGHT_GRAY}:${YELLOW}\u${LIGHT_GRAY}"
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-export EDITOR="mvim -v"
 
 function prompt_func() {
 	git_branch=$(parse_git_branch)
