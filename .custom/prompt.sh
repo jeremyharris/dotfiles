@@ -1,15 +1,13 @@
 # bash customization
-default_prompt="${GREEN}\u${LIGHT_GRAY}@${YELLOW}\h${LIGHT_GRAY}"
-export CLICOLOR=1
-export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+default_prompt="${GREEN}\u${LIGHT_GRAY}@${YELLOW}\h"
 
 function prompt_func() {
 	git_branch=$(parse_git_branch)
   if [ "${git_branch}" == "" ]; then
-    PS1="${default_prompt}"
+    PS1="${default_prompt}${RESET}"
   else
-		prompt="${LIGHT_GRAY}[${GREEN}${git_branch}${LIGHT_GRAY}]${LIGHT_GRAY}"
-    PS1="${default_prompt}${prompt}"
+		prompt="${LIGHT_GRAY}[${GREEN}${git_branch}${LIGHT_GRAY}]"
+    PS1="${default_prompt}${prompt}${RESET}"
   fi
   # prompt
   PS1="${PS1}$ "
