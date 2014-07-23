@@ -1,0 +1,8 @@
+# because 'get info' blows
+function get_size() {
+	if [ -d $1 ]; then
+		du -ch | grep total | awk '{print $1}'
+	elif [ -f "$1" ]; then
+		ls -hl $1 | awk '{print $5}'
+	fi
+}
