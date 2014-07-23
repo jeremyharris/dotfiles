@@ -1,5 +1,5 @@
 # bash customization
-default_prompt="${GREEN}\h${LIGHT_GRAY}:${YELLOW}\u${LIGHT_GRAY}"
+default_prompt="${GREEN}\u${LIGHT_GRAY}@${YELLOW}\h${LIGHT_GRAY}"
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
