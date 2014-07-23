@@ -1,13 +1,36 @@
 #!/bin/bash
 
+source ~/.bash/colors.sh
+
 # turns my dev env on or off
 
-if [ $1 == "on" ]; then
+if [ "$1" == "on" ]; then
+	echo -e "${WHITE}Starting development services"
+	echo -e "${GREEN}Starting${LIGHT_GRAY} Apache"
 	sudo apachectl start
-	brew services start mysql
-	brew services start redis
-else
+	echo -e "${GREEN}Starting${LIGHT_GRAY} Redis"
+	launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+	echo -e "${GREEN}Starting${LIGHT_GRAY} MySQL"
+	launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+	echo -e "${GREEN}Starting${LIGHT_GRAY} PostgreSQL"
+	launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+elif [ "$1" == "off" ]; then
+	echo -e "${WHITE}Stopping development services"
+	echo -e "${RED}Stopping${LIGHT_GRAY} Apache"
 	sudo apachectl stop
-	brew services stop mysql
-	brew services stop redis
+	echo -e "${RED}Stopping${LIGHT_GRAY} Redis"
+	launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+	echo -e "${RED}Stopping${LIGHT_GRAY} MySQL"
+	launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+	echo -e "${RED}Stopping${LIGHT_GRAY} PostgreSQL"
+	launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+else
+	apache_on=$(pgrep httpd)
+	if [ -z "$apache_on" ]; then
+		echo -e "${LIGHT_GRAY}Development services are ${RED}off"
+	else
+		echo -e "${LIGHT_GRAY}Development services are ${GREEN}on"
+	fi
 fi
+
+echo -ne "${RESET}"
