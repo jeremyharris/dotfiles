@@ -1,29 +1,73 @@
 #!/bin/bash
 
+# turns my dev env on or off
+# turns on Apache and various homebrew services
+#
+### Usage:
+#
+# ./development $1
+#
+# $1:
+#  - (empty) Reports if dev environment is running
+#  - 'on' Turns on dev environment
+#  - 'off' Turns off dev environment
+
 source ~/.bash/colors.sh
 
-# turns my dev env on or off
+homebrew_services=( 'redis' 'mysql' 'postgresql' )
+
+# echos a nice color coded message
+#
+# $1 'start'|'stop'
+# $2 service name
+function service_msg() {
+	if [ "$1" == "start" ]; then
+		echo -e "${GREEN}Starting${LIGHT_GRAY} $2"
+	else
+		echo -e "${RED}Stopping${LIGHT_GRAY} $2"
+	fi
+}
+
+# starts/stops a homebrew service
+#
+# $1 'start'|'stop'
+# $2 homebrew service name
+function homebrew_service() {
+	service_plist_path="$( brew --prefix $2)"
+	service_plist="$( find ${service_plist_path}/ -name \*.plist )"
+	# thanks: http://stackoverflow.com/questions/12487424/uppercase-first-character-in-a-variable-with-bash
+	service_name="$(tr '[:lower:]' '[:upper:]' <<< ${2:0:1})${2:1}"
+	if [ -f "$service_plist" ]; then
+		load="load"
+		if [ "$1" == "stop" ]; then
+			load="unload"
+		fi
+		service_msg "$1" "$service_name"
+		launchctl $load $service_plist
+	else
+		echo "$service_name is not a homebrew service"
+	fi
+}
+
+# iterates through $homebrew_services and starts or stops them
+#
+# $1 'start'|'stop'
+function trigger_homebrew_services() {
+	for service in "${homebrew_services[@]}"; do
+		homebrew_service "$1" "$service"
+	done
+}
 
 if [ "$1" == "on" ]; then
 	echo -e "${WHITE}Starting development services"
-	echo -e "${GREEN}Starting${LIGHT_GRAY} Apache"
+	service_msg 'start' 'Apache'
 	sudo apachectl start
-	echo -e "${GREEN}Starting${LIGHT_GRAY} Redis"
-	launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
-	echo -e "${GREEN}Starting${LIGHT_GRAY} MySQL"
-	launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
-	echo -e "${GREEN}Starting${LIGHT_GRAY} PostgreSQL"
-	launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+	trigger_homebrew_services 'start'
 elif [ "$1" == "off" ]; then
 	echo -e "${WHITE}Stopping development services"
-	echo -e "${RED}Stopping${LIGHT_GRAY} Apache"
+	service_msg 'stop' 'Apache'
 	sudo apachectl stop
-	echo -e "${RED}Stopping${LIGHT_GRAY} Redis"
-	launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
-	echo -e "${RED}Stopping${LIGHT_GRAY} MySQL"
-	launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
-	echo -e "${RED}Stopping${LIGHT_GRAY} PostgreSQL"
-	launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+	trigger_homebrew_services 'stop'
 else
 	apache_on=$(pgrep httpd)
 	if [ -z "$apache_on" ]; then
