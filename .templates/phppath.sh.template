@@ -1,0 +1,3 @@
+#!/bin/bash
+
+export PATH=$(brew --prefix __VERSION__)/bin:$PATH

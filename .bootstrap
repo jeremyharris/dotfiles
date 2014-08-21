@@ -12,4 +12,6 @@ source ~/.custom/pagoda.sh
 
 # paths
 export GOPATH=/usr/local/lib/golang
-export PATH=$(brew --prefix josegonzalez/php/php53)/bin:$HOME/.scripts:$GOPATH/bin:/usr/local/share/npm/bin:/usr/local/bin:/Users/jeremy/Projects/cakephp/lib/Cake/Console:$PATH
+export PATH=$HOME/.composer/vendor/bin/:$HOME/.scripts:$GOPATH/bin:/usr/local/share/npm/bin:/usr/local/bin:/Users/jeremy/Projects/cakephp/lib/Cake/Console:$PATH
+# import php path
+source ~/.custom/phppath.sh

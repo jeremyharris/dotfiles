@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# Switches php versions
+#
+# Required
+# - ./development
+# - apache2
+# - homebrew php versions
+# - ~/.templates/*
+# - ~/.bootstrap OR include ~/.custom/phppath.sh
+
+source ~/.bash/colors.sh
+
+new_version="$1"
+old_version=$(which php | grep -o 'php5[0-9]')
+
+if [ -z "$new_version" ]; then
+	echo -e "${RED}No version selected:${LIGHT_GRAY} php-switch \$VERSION"
+	echo -ne "${RESET}"
+	exit 1
+fi
+
+if [ "$new_version" == "$old_version" ]; then
+	echo -e "${LIGHT_GRAY}Already on ${GREEN}${new_version}${LIGHT_GRAY}!"
+	echo -ne "${RESET}"
+	exit
+fi
+
+brew_path=$(brew --prefix "$new_version" 2>/dev/null)
+
+if [ -z "$brew_path" ]; then
+	echo -e "${RED}${new_version}${LIGHT_GRAY} not installed"
+	echo -ne "${RESET}"
+	exit 1
+fi
+
+template_file_path=~/.templates/php5x.conf.template
+path_template_file_path=~/.templates/phppath.sh.template
+
+if [ ! -e "$template_file_path" -o ! -e "$path_template_file_path" ]; then
+	echo -e "${RED}Template files missing${LIGHT_GRAY}"
+	echo -ne "${RESET}"
+	exit 1
+fi
+
+echo -e "${LIGHT_GRAY}Switching to php version ${GREEN}${new_version}"
+echo -ne "${RESET}"
+
+php_path_path=~/.custom/phppath.sh
+
+cp -f "$path_template_file_path" "$php_path_path"
+sed -i -e "s/__VERSION__/${new_version}/g" "$php_path_path"
+
+apache_conf_path=/etc/apache2/other/php5.conf
+
+sudo cp -f "$template_file_path" "$apache_conf_path"
+sudo sed -i -e "s/__VERSION__/${new_version}/g" "$apache_conf_path"
+sudo chown root:wheel "$apache_conf_path"
+sudo chmod 444 "$apache_conf_path"
+
+brew unlink "${old_version}"
+brew unlink "${new_version}" && brew link "${new_version}"
+
+development off
+development on
+
+echo -e "${GREEN}Done! ${LIGHT_GRAY}Make sure to source ~/.bootstrap to use ${new_version} in this shell"
+echo -ne "${RESET}"
