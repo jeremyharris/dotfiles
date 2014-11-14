@@ -1,0 +1,24 @@
+[user]
+	name = Jeremy Harris
+	email = jeremy@someguyjeremy.com
+[diff]
+[color]
+	diff = true
+	ui = true
+[core]
+	autocrlf = false
+	ignorecase = false
+[merge]
+	renameLimit = 5000
+[help]
+	format = man
+[diff]
+	renameLimit = 5000
+[mergetool]
+[mergetool "smartsynchronize"]
+[alias]
+	lg = log --decorate --stat --graph --pretty=format:'%C(yellow)%h%Creset (%ar - %Cred%an%Creset), %s%n'
+[gc]
+	auto = 1
+[push]
+	default = matching
