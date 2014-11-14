@@ -1,11 +1,13 @@
 #!/bin/bash --login
 
+export CAKE_ENV=develop
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
 # imports
 source ~/.bash/colors.sh
 source ~/.bash/git_parse.sh
+source ~/.bash/aws.sh
 source ~/.custom/prompt.sh
 source ~/.custom/aliases.sh
 source ~/.custom/pagoda.sh
