@@ -3,6 +3,8 @@
 export CAKE_ENV=develop
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+export PHP_INI_SCAN_DIR=~/.apache
+
 
 # imports
 source ~/.bash/colors.sh
