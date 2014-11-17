@@ -136,8 +136,8 @@ set modeline
 set modelines=10
 
 " Directories for swp files
-set backupdir=~/.vim/backup
-set directory=~/.vim/backup
+set backupdir-=.
+set backupdir^=~/tmp,/tmp
 
 " Turn off jslint errors by default
 let g:JSLintHighlightErrorLine = 0
