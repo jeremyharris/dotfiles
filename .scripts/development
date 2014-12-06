@@ -63,18 +63,19 @@ if [ "$1" == "on" ]; then
 	service_msg 'start' 'Apache'
 	sudo apachectl start
 	trigger_homebrew_services 'start'
+	touch /tmp/development_on
 elif [ "$1" == "off" ]; then
 	echo -e "${WHITE}Stopping development services"
 	service_msg 'stop' 'Apache'
 	sudo apachectl stop
 	trigger_homebrew_services 'stop'
+	rm /tmp/development_on
+fi
+
+if [ ! -f /tmp/development_on ]; then
+	echo -e "${LIGHT_GRAY}Development services are ${RED}off"
 else
-	apache_on=$(pgrep httpd)
-	if [ -z "$apache_on" ]; then
-		echo -e "${LIGHT_GRAY}Development services are ${RED}off"
-	else
-		echo -e "${LIGHT_GRAY}Development services are ${GREEN}on"
-	fi
+	echo -e "${LIGHT_GRAY}Development services are ${GREEN}on"
 fi
 
 echo -ne "${RESET}"
