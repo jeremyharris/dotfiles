@@ -59,7 +59,7 @@ sudo chown root:wheel "$apache_conf_path"
 sudo chmod 444 "$apache_conf_path"
 
 brew unlink "${old_version}"
-brew unlink "${new_version}" && brew link "${new_version}"
+brew unlink "${new_version}" && brew link --overwrite "${new_version}"
 
 development off
 development on

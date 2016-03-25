@@ -11,6 +11,4 @@ alias apacheconf="cd /etc/apache2/"
 # thanks: http://stackoverflow.com/questions/149057/how-to-remove-trailing-whitespace-of-all-files-recursively?rq=1
 alias rmws="find . -not \( -name .git -prune \) -type f -exec sed -i -e 's/[[:space:]]*$//' {} \;"
 
-# CTC related aliases
-alias ctc-start-rules='java -jar ~/Projects/CakeDC/ctc/Vendors/Rules/jars/rules.jar -c ~/Projects/CakeDC/ctc/MarsPlatform/lib/CareTeamConnect/Rules/'
-alias ctc-sync='/Users/jeremy/Projects/CakeDC/ctc/MarsPlatform/lib/Cake/Console/cake --app /Users/jeremy/Projects/CakeDC/ctc/MarsPlatform/app sync'
+alias upgrade='composer global update && npm install -g npm@latest && npm update -g --quiet && gem update && gem cleanup && brew update && brew upgrade && brew cleanup -s --force'

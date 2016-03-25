@@ -1,3 +1,3 @@
 #!/bin/bash
 
-export PATH=$(brew --prefix php54)/bin:$PATH
+export PATH=$(brew --prefix php56)/bin:$PATH

@@ -14,7 +14,8 @@
 
 source ~/.bash/colors.sh
 
-homebrew_services=( 'redis' 'mysql' 'postgresql' )
+development_status=~/.development_on
+homebrew_services=( 'redis' )
 
 # echos a nice color coded message
 #
@@ -62,17 +63,25 @@ if [ "$1" == "on" ]; then
 	echo -e "${WHITE}Starting development services"
 	service_msg 'start' 'Apache'
 	sudo apachectl start
+	service_msg 'start' 'MySQL'
+	mysql.server start --datadir=/Volumes/Capital/db
+	service_msg 'start' 'SMTP Service'
+	nohup sudo java -jar ~/.scripts/fakesmtp.jar -o /tmp/received-emails -s >/dev/null 2>&1 &
 	trigger_homebrew_services 'start'
-	touch /tmp/development_on
+	touch "${development_status}"
 elif [ "$1" == "off" ]; then
 	echo -e "${WHITE}Stopping development services"
 	service_msg 'stop' 'Apache'
 	sudo apachectl stop
+	service_msg 'stop' 'MySQL'
+	mysql.server stop
+	service_msg 'stop' 'SMTP Service'
+	sudo pkill -f fakesmtp
 	trigger_homebrew_services 'stop'
-	rm /tmp/development_on
+	rm "${development_status}"
 fi
 
-if [ ! -f /tmp/development_on ]; then
+if [ ! -f "${development_status}" ]; then
 	echo -e "${LIGHT_GRAY}Development services are ${RED}off"
 else
 	echo -e "${LIGHT_GRAY}Development services are ${GREEN}on"

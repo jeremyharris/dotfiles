@@ -1,12 +1,12 @@
 #!/bin/bash --login
 
 export CAKE_ENV=develop
+export CREW_ENV=local
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-export PHP_INI_SCAN_DIR=~/.apache
-
 
 # imports
+source ~/.profile
 source ~/.bash/colors.sh
 source ~/.bash/git_parse.sh
 source ~/.bash/aws.sh
@@ -16,6 +16,7 @@ source ~/.custom/pagoda.sh
 
 # paths
 export GOPATH=/usr/local/lib/golang
-export PATH=$HOME/.composer/vendor/bin:$HOME/.scripts:$GOPATH/bin:/usr/local/share/npm/bin:/usr/local/bin:/Users/jeremy/Projects/cakephp/lib/Cake/Console:$PATH
+export ANDROID_HOME=$(brew --prefix android-sdk)
+export PATH=$HOME/.composer/vendor/bin:$HOME/.scripts:$GOPATH/bin:/usr/local/share/npm/bin:/usr/local/bin:$PATH
 # import php path
 source ~/.custom/phppath.sh
