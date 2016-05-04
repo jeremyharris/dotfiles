@@ -64,9 +64,7 @@ if [ "$1" == "on" ]; then
 	service_msg 'start' 'Apache'
 	sudo apachectl start
 	service_msg 'start' 'MySQL'
-	mysql.server start --datadir=/Volumes/Capital/db
-	service_msg 'start' 'SMTP Service'
-	nohup sudo java -jar ~/.scripts/fakesmtp.jar -o /tmp/received-emails -s >/dev/null 2>&1 &
+	mysql.server start
 	trigger_homebrew_services 'start'
 	touch "${development_status}"
 elif [ "$1" == "off" ]; then
@@ -75,8 +73,6 @@ elif [ "$1" == "off" ]; then
 	sudo apachectl stop
 	service_msg 'stop' 'MySQL'
 	mysql.server stop
-	service_msg 'stop' 'SMTP Service'
-	sudo pkill -f fakesmtp
 	trigger_homebrew_services 'stop'
 	rm "${development_status}"
 fi
