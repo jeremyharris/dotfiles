@@ -12,7 +12,9 @@
 source ~/.bash/colors.sh
 
 new_version="$1"
-old_version=$(which php | grep -o 'php5[0-9]')
+major_version=$(cut -c1 <<< "$new_version")
+homebrew_package="php${new_version}"
+old_package=$(which php | grep -Eo 'php[0-9]+')
 
 if [ -z "$new_version" ]; then
 	echo -e "${RED}No version selected:${LIGHT_GRAY} php-switch \$VERSION"
@@ -20,21 +22,15 @@ if [ -z "$new_version" ]; then
 	exit 1
 fi
 
-if [ "$new_version" == "$old_version" ]; then
-	echo -e "${LIGHT_GRAY}Already on ${GREEN}${new_version}${LIGHT_GRAY}!"
-	echo -ne "${RESET}"
-	exit
-fi
-
-brew_path=$(brew --prefix "$new_version" 2>/dev/null)
+brew_path=$(brew --prefix "$homebrew_package" 2>/dev/null)
 
 if [ -z "$brew_path" ]; then
-	echo -e "${RED}${new_version}${LIGHT_GRAY} not installed"
+	echo -e "${RED}${homebrew_package}${LIGHT_GRAY} not installed"
 	echo -ne "${RESET}"
 	exit 1
 fi
 
-template_file_path=~/.templates/php5x.conf.template
+template_file_path=~/.templates/php.conf.template
 path_template_file_path=~/.templates/phppath.sh.template
 
 if [ ! -e "$template_file_path" -o ! -e "$path_template_file_path" ]; then
@@ -49,17 +45,18 @@ echo -ne "${RESET}"
 php_path_path=~/.custom/phppath.sh
 
 cp -f "$path_template_file_path" "$php_path_path"
-sed -i -e "s/__VERSION__/${new_version}/g" "$php_path_path"
+sed -i -e "s/__VERSION__/${homebrew_package}/g" "$php_path_path"
 
-apache_conf_path=/etc/apache2/other/php5.conf
+apache_conf_path=/etc/apache2/other/php.conf
 
 sudo cp -f "$template_file_path" "$apache_conf_path"
-sudo sed -i -e "s/__VERSION__/${new_version}/g" "$apache_conf_path"
+sudo sed -i -e "s/__VERSION__/${homebrew_package}/g" "$apache_conf_path"
+sudo sed -i -e "s/__MAJORVERSION__/${major_version}/g" "$apache_conf_path"
 sudo chown root:wheel "$apache_conf_path"
 sudo chmod 444 "$apache_conf_path"
 
-brew unlink "${old_version}"
-brew unlink "${new_version}" && brew link --overwrite "${new_version}"
+brew unlink "${old_package}"
+brew unlink "${homebrew_package}" && brew link --overwrite "${homebrew_package}"
 
 development off
 development on

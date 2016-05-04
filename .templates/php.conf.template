@@ -1,6 +1,6 @@
-LoadModule php5_module    /usr/local/opt/__VERSION__/libexec/apache2/libphp5.so
+LoadModule php__MAJORVERSION___module    /usr/local/opt/__VERSION__/libexec/apache2/libphp__MAJORVERSION__.so
 
-<IfModule php5_module>
+<IfModule php__MAJORVERSION___module>
 	AddType application/x-httpd-php .php
 	AddType application/x-httpd-php-source .phps
 
