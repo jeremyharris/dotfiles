@@ -6,7 +6,6 @@ export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
 # imports
-source ~/.profile
 source ~/.bash/colors.sh
 source ~/.bash/git_parse.sh
 source ~/.bash/aws.sh
