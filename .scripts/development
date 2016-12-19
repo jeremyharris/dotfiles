@@ -15,7 +15,7 @@
 source ~/.bash/colors.sh
 
 development_status=~/.development_on
-homebrew_services=( 'redis' )
+homebrew_services=( 'redis' 'php70' 'httpd24' 'mysql@5.6' )
 
 # echos a nice color coded message
 #
@@ -24,8 +24,10 @@ homebrew_services=( 'redis' )
 function service_msg() {
 	if [ "$1" == "start" ]; then
 		echo -e "${GREEN}Starting${LIGHT_GRAY} $2"
+		echo -ne "${RESET}"
 	else
 		echo -e "${RED}Stopping${LIGHT_GRAY} $2"
+		echo -ne "${RESET}"
 	fi
 }
 
@@ -55,24 +57,22 @@ function homebrew_service() {
 # $1 'start'|'stop'
 function trigger_homebrew_services() {
 	for service in "${homebrew_services[@]}"; do
-		homebrew_service "$1" "$service"
+		sudo=""
+		if [ "$service" == "httpd24" ]; then
+			sudo="sudo"
+		fi
+		$sudo brew services "$1" "$service"
 	done
 }
 
 if [ "$1" == "on" ]; then
 	echo -e "${WHITE}Starting development services"
-	service_msg 'start' 'Apache'
-	sudo apachectl start
-	service_msg 'start' 'MySQL'
-	mysql.server start
+	echo -ne "${RESET}"
 	trigger_homebrew_services 'start'
 	touch "${development_status}"
 elif [ "$1" == "off" ]; then
 	echo -e "${WHITE}Stopping development services"
-	service_msg 'stop' 'Apache'
-	sudo apachectl stop
-	service_msg 'stop' 'MySQL'
-	mysql.server stop
+	echo -ne "${RESET}"
 	trigger_homebrew_services 'stop'
 	rm "${development_status}"
 fi

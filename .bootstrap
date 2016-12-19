@@ -1,5 +1,16 @@
 #!/bin/bash --login
 
+# set gpg tty to current one
+export GPG_TTY=$(tty)
+
+# start the gpg-agent up if one is not already started
+if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
+	source ~/.gnupg/.gpg-agent-info
+	export GPG_AGENT_INFO
+else
+	eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
+fi
+
 export CAKE_ENV=develop
 export CREW_ENV=local
 export CLICOLOR=1

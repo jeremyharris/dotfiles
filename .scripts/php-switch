@@ -47,7 +47,7 @@ php_path_path=~/.custom/phppath.sh
 cp -f "$path_template_file_path" "$php_path_path"
 sed -i -e "s/__VERSION__/${homebrew_package}/g" "$php_path_path"
 
-apache_conf_path=/etc/apache2/other/php.conf
+apache_conf_path=/usr/local/etc/apache2/2.4/other/php.conf
 
 sudo cp -f "$template_file_path" "$apache_conf_path"
 sudo sed -i -e "s/__VERSION__/${homebrew_package}/g" "$apache_conf_path"
